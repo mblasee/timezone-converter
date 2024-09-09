@@ -1,0 +1,19 @@
+version: '3'
+
+services:
+  app:
+    build: .
+    container_name: timezone-converter
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.app.rule=Host(`tz.balazsdev.com`)"
+      - "traefik.http.routers.app.entrypoints=websecure"
+      - "traefik.http.routers.app.tls.certresolver=myresolver"
+      - "traefik.http.services.app.loadbalancer.server.port=3000"
+    networks:
+      - traefik-public
+    restart: unless-stopped
+
+networks:
+  traefik-public:
+    external: true
